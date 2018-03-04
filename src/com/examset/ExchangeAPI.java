@@ -39,15 +39,15 @@ public interface ExchangeAPI {
 
     // Exercise [7]
     // From the whole market summary, find and filter the USDT-OMG conversion out.
-    int coinWithHighestFee();
+    int falseCoinsInTheMarket();
 
     // Exercise [8]
     // Filter all the buy orders out
-    String findNumberOfBuyOrders();
+    String coinWithHighestFee();
 
     // Exercise [9]
     // From the filter before with buy order - sort them in quantity bought in descending order.
     double[] sortBuyOrdersQuantityDescending();
 
-    
+
 }

@@ -109,7 +109,23 @@ public class Implementation implements ExchangeAPI {
     }
 
     @Override
-    public String findNumberOfBuyOrders() {
+    public String coinWithHighestFee() {
+        String coin = null;
+        try {
+            List<Currency> currencies = Helper.fromJsonToObjectCurrencies();
+            double high = 0;
+
+            for (Currency c : currencies) {
+
+                if (c.getTxFree() > high) {
+                    high = c.getTxFree();
+                    coin = c.getCurrency();
+                }
+            }
+            return coin;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

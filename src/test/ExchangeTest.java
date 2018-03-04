@@ -125,4 +125,29 @@ public class ExchangeTest {
         */
         Assertions.assertEquals(9, imp.falseCoinsInTheMarket());
     }
+
+
+    @Test
+    void testCoinWithHighestFee() {
+        /*try {
+            List<Currency> currencies = Helper.fromJsonToObjectCurrencies();
+
+            double high = 0;
+            String coin = null;
+            for (Currency c : currencies) {
+
+                if (c.getTxFree() > high) {
+                    high = c.getTxFree();
+                    coin = c.getCurrency();
+                }
+            }
+
+            System.out.println("Coin: " + coin + " Fee: " + high);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+
+        Assertions.assertEquals("COVAL", imp.coinWithHighestFee());
+    }
 }
