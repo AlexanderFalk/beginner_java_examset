@@ -8,30 +8,32 @@ public class Implementation implements ExchangeAPI {
 
 
     @Override
-    public String changeNameOfTrader() {
-       Helper.traderOne.setName("Michael Moon");
-        return Helper.traderOne.getName();
+    public String changeNameOfTrader(Trader trader, String name) {
+       trader.setName(name);
+        return trader.getName();
     }
 
     @Override
-    public int addTradeOrderToTraderTwo() {
-        Helper.populateTraderObjects();
-        int[] temporary = Helper.traderTwo.getTradeHistory();
+    public int addTradeOrderToTraderTwo(Trader trader, int order) {
+
+        //Helper.populateTraderObjects();
+        int[] temporary = trader.getTradeHistory();
         temporary = Helper.addElement(temporary, 9);
 
         return temporary.length;
     }
 
     @Override
-    public int combineTradersHistory() {
-        Helper.populateTraderObjects();
-        int result = Helper.traderOne.getTradeHistory().length + Helper.traderTwo.getTradeHistory().length;
+    public int combineTradersHistory(Trader traderOne, Trader traderTwo) {
+        //Helper.populateTraderObjects();
+
+        int result = traderOne.getTradeHistory().length + traderTwo.getTradeHistory().length;
         return result;
     }
 
     @Override
-    public List<Integer> oddTradesFromCombinedHistory() {
-        int[] comb = Helper.concat(Helper.traderOne.getTradeHistory(), Helper.traderTwo.getTradeHistory());
+    public List<Integer> oddTradesFromCombinedHistory(Trader traderOne, Trader traderTwo) {
+        int[] comb = Helper.concat(traderOne.getTradeHistory(), traderTwo.getTradeHistory());
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < comb.length; i++) {
             if(comb[i] % 2 == 1) {
@@ -43,8 +45,8 @@ public class Implementation implements ExchangeAPI {
     }
 
     @Override
-    public int findTraderHighestBuyOrderInQuantity() {
-        int[] comb = Helper.concat(Helper.traderOne.getTradeHistory(), Helper.traderTwo.getTradeHistory());
+    public int findTraderHighestBuyOrderInQuantity(Trader traderOne, Trader traderTwo) {
+        int[] comb = Helper.concat(traderOne.getTradeHistory(), traderTwo.getTradeHistory());
         int high = 0;
         for (int aComb : comb) {
 
@@ -56,8 +58,8 @@ public class Implementation implements ExchangeAPI {
     }
 
     @Override
-    public void writeTraderHighestBuyOrderToFile() {
-        int[] comb = Helper.concat(Helper.traderOne.getTradeHistory(), Helper.traderTwo.getTradeHistory());
+    public void writeTraderHighestBuyOrderToFile(Trader traderOne, Trader traderTwo) {
+        int[] comb = Helper.concat(traderOne.getTradeHistory(), traderTwo.getTradeHistory());
         int high = 0;
         for (int aComb : comb) {
 
@@ -74,63 +76,45 @@ public class Implementation implements ExchangeAPI {
     }
 
     @Override
-    public String findBitcoin() {
+    public String findBitcoin(List<Currency> currencies) {
         String BTC;
-        try {
-            List<Currency> list = Helper.fromJsonToObjectCurrencies();
-
-            for (Currency aList : list) {
-                if (aList.getCurrency().equals("BTC")) {
-                    BTC = aList.getCurrency();
-                    return BTC;
-                }
+        for (Currency aList : currencies) {
+            if (aList.getCurrency().equals("BTC")) {
+                BTC = aList.getCurrency();
+                return BTC;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public int falseCoinsInTheMarket() {
-        try {
-            List<Currency> currencies = Helper.fromJsonToObjectCurrencies();
-            int index = 0;
-            for (Currency c : currencies) {
-                if (!c.isActive()) {
-                    index++;
-                }
+    public int falseCoinsInTheMarket(List<Currency> currencies) {
+        int index = 0;
+        for (Currency c : currencies) {
+            if (!c.isActive()) {
+                index++;
             }
-            return index;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return 0;
+        return index;
     }
 
     @Override
-    public String coinWithHighestFee() {
+    public String coinWithHighestFee(List<Currency> currencies) {
         String coin = null;
-        try {
-            List<Currency> currencies = Helper.fromJsonToObjectCurrencies();
-            double high = 0;
+        double high = 0;
 
-            for (Currency c : currencies) {
+        for (Currency c : currencies) {
 
-                if (c.getTxFree() > high) {
-                    high = c.getTxFree();
-                    coin = c.getCurrency();
-                }
+            if (c.getTxFree() > high) {
+                high = c.getTxFree();
+                coin = c.getCurrency();
             }
-            return coin;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
+        return coin;
     }
 
     @Override
-    public double[] sortBuyOrdersQuantityDescending() {
+    public double[] sortBuyOrdersQuantityDescending(List<Currency> currencies) {
         return new double[0];
     }
 }

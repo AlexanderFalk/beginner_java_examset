@@ -3,6 +3,7 @@ package test;
 import com.examset.Currency;
 import com.examset.Helper;
 import com.examset.Implementation;
+import com.examset.Trader;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
@@ -11,72 +12,78 @@ import java.util.List;
 public class ExchangeTest {
 
 
-    Implementation imp = new Implementation();
+    private Implementation imp = new Implementation();
+    private static Trader traderOne = new Trader("Roger Dawn", 29);
+    private static Trader traderTwo = new Trader("John Song", 32);
 
     @BeforeAll
-    static void initAll(){
-        Helper.populateTraderObjects();
+    static void beforeEach(){
+        int[] historyOne = {
+                2,
+                9,
+                5,
+                7,
+                12,
+                1
+        };
+
+        int[] historyTwo = {
+                2,
+                3,
+                2,
+                20,
+                13,
+                25
+        };
+
+        traderOne.setTradeHistory(historyOne);
+        traderTwo.setTradeHistory(historyTwo);
+
     }
 
     @Test
-    public void testNameChange() {
-        Assertions.assertNotEquals(Helper.traderOne.getName(), imp.changeNameOfTrader());
-    }
-
-    @Test
-    public void testTradeHistoryAppend() {
-        int actualLength = imp.addTradeOrderToTraderTwo();
-        Assertions.assertEquals(Helper.traderTwo.getTradeHistory().length + 1, actualLength);
-    }
-
-    @Test
-    public void testCombiningOfTradersHistory() {
-        int expected = Helper.traderTwo.getTradeHistory().length + Helper.traderOne.getTradeHistory().length;
-        int actual = imp.combineTradersHistory();
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    void testOddTradeHistories() {
-        List<Integer> temp = imp.oddTradesFromCombinedHistory();
-        int actual = 0;
-        for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i) % 2 == 1) {
-                actual ++;
-            }
-
-        }
-
-        Assertions.assertEquals(temp.size(), actual);
+    private void testNameChange() {
+        String newName = imp.changeNameOfTrader(traderOne, "Sally");
+        Assertions.assertNotEquals(traderOne.getName(), newName);
     }
 
     @Test
     @AfterEach
-    void testHighestBuyOrder() {
-        int[] combineHistories = Helper.concat(Helper.traderOne.getTradeHistory(), Helper.traderTwo.getTradeHistory());
-        int expected = 0;
-        for (int i = 0; i < combineHistories.length; i++) {
-            if (combineHistories[i] > expected) {
-                expected = combineHistories[i];
-            }
-        }
+    private void testTradeHistoryAppend() {
+        int expected = traderTwo.getTradeHistory().length + 1;
+        int actualLength = imp.addTradeOrderToTraderTwo(traderOne, 77);
+        Assertions.assertEquals(expected, actualLength);
+    }
 
-        System.out.println(expected);
-        Assertions.assertEquals(expected, imp.findTraderHighestBuyOrderInQuantity());
+    @Test
+    private void testCombiningOfTradersHistory() {
+        int expected = traderTwo.getTradeHistory().length + traderOne.getTradeHistory().length;
+        int actual = imp.combineTradersHistory(traderOne, traderTwo);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @RepeatedTest(1)
+    void testOddTradeHistories(RepetitionInfo repetitionInfo) {
+        List<Integer> actual = imp.oddTradesFromCombinedHistory(traderOne, traderTwo);
+        int expected = 6 + repetitionInfo.getTotalRepetitions();
+
+        Assertions.assertEquals(expected, actual.size());
+    }
+
+
+    @Test
+    @AfterEach
+    void testHighestBuyOrder() {
+        int expected = 25;
+        int actual = imp.findTraderHighestBuyOrderInQuantity(traderOne, traderTwo);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void testFileWritingHighestBuyOrder() {
-        imp.writeTraderHighestBuyOrderToFile();
+        imp.writeTraderHighestBuyOrderToFile(traderOne, traderTwo);
         File checkFile = new File("highest.txt");
-        //Finding highest value
-        int[] combineHistories = Helper.concat(Helper.traderOne.getTradeHistory(), Helper.traderTwo.getTradeHistory());
-        int expected = 0;
-        for (int i = 0; i < combineHistories.length; i++) {
-            if (combineHistories[i] > expected) {
-                expected = combineHistories[i];
-            }
-        }
+        int expected = 25;
         if(checkFile.exists() && !checkFile.isDirectory()) {
             Assertions.assertTrue(true);
             try {
@@ -94,16 +101,11 @@ public class ExchangeTest {
     }
 
     @Test
-    void testFindBitcoin(TestInfo info) {
+    void testFindBitcoin() {
+        String expected = "BTC";
         try {
-            List<Currency> allCurrencies = Helper.fromJsonToObjectCurrencies();
-            String BTC = null;
-            for (Currency c : allCurrencies) {
-                if(c.getCurrency().equals("BTC")) {
-                    BTC = c.getCurrency();
-                }
-            }
-            Assertions.assertEquals(BTC, imp.findBitcoin());
+            String actual = imp.findBitcoin(Helper.fromJsonToObjectCurrencies());
+            Assertions.assertEquals(expected, actual);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,42 +114,25 @@ public class ExchangeTest {
 
     @Test
     void testNumberOfNotActiveCoins() {
-        /*List<Currency> currencies = null;
         try {
-            currencies = Helper.fromJsonToObjectCurrencies();
-
-        int index = 0;
-        for (Currency c : currencies) {
-            if (!c.isActive()) {
-                index++;
-            }
+            int expected = 9;
+            int actual = imp.falseCoinsInTheMarket(Helper.fromJsonToObjectCurrencies());
+            Assertions.assertEquals(expected, actual);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        */
-        Assertions.assertEquals(9, imp.falseCoinsInTheMarket());
+
     }
 
 
     @Test
     void testCoinWithHighestFee() {
-        /*try {
-            List<Currency> currencies = Helper.fromJsonToObjectCurrencies();
-
-            double high = 0;
-            String coin = null;
-            for (Currency c : currencies) {
-
-                if (c.getTxFree() > high) {
-                    high = c.getTxFree();
-                    coin = c.getCurrency();
-                }
-            }
-
-            System.out.println("Coin: " + coin + " Fee: " + high);
+        try {
+            String expected = "COVAL";
+            String actual = imp.coinWithHighestFee(Helper.fromJsonToObjectCurrencies());
+            Assertions.assertEquals(expected, actual);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
-
-        Assertions.assertEquals("COVAL", imp.coinWithHighestFee());
     }
 }

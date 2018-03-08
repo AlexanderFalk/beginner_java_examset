@@ -13,55 +13,11 @@ import java.util.List;
 
 public class Helper {
 
-    private static final String CURRENCY_LOCATION = "currencies.json";
-    private final String MARKETDATA_LOCATION = "/resources/marketdata.json";
-    private final String MARKETSUMMARY_LOCATION = "/resources/marketsummary.json";
-
-    public static Trader traderOne = new Trader("Roger Dawn", 29);
-    public static Trader traderTwo = new Trader("John Song", 32);
-
-    // Can be used to populate the histories of the two traders. Use it at as first step in a method
-    public static Trader[] populateTraderObjects() {
-
-        int[] historyOne = {
-                2,
-                9,
-                5,
-                7,
-                12,
-                1
-        };
-
-        int[] historyTwo = {
-                2,
-                3,
-                2,
-                20,
-                13,
-                25
-        };
-
-        traderOne.setTradeHistory(historyOne);
-        traderTwo.setTradeHistory(historyTwo);
-
-        Trader[] traders = new Trader[] {
-                traderOne,
-                traderTwo
-        };
-
-        return traders;
-    }
-
     // Adds a member to the array by copying the old array into a new array with greater length
     static int[] addElement(int[] a, int e) {
         a  = Arrays.copyOf(a, a.length + 1);
         a[a.length - 1] = e;
         return a;
-    }
-
-
-    public static void fillMarketObjectsToArray() {
-
     }
 
     // Concatenates two int arrays.

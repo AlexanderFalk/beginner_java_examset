@@ -25,27 +25,27 @@ public interface ExchangeAPI {
     List<Integer> oddTradesFromCombinedHistory(Trader traderOne, Trader TraderTwo);
 
     // Exercise [4]
-    // Find the highest trade order from both traders history
-    int findTraderHighestBuyOrderInQuantity(Trader trader);
+    // Find the highest trade order from the combined history of trader one and two.
+    int findTraderHighestBuyOrderInQuantity(Trader trader, Trader TraderTwo);
 
     // Exercise [5]
     // Get the highest trading quantity and write it to a file
     // Remember to name the file: highest.txt
-    void writeTraderHighestBuyOrderToFile(Trader trader);
+    void writeTraderHighestBuyOrderToFile(Trader trader, Trader TraderTwo);
 
     // Exercise [6]
     // Find bitcoin in the chunk of data retrieved from the network request.
-    String findBitcoin(Currency[] currencies);
+    String findBitcoin(List<Currency> currencies);
 
     // Exercise [7]
     // From the whole market summary, find and filter the USDT-OMG conversion out.
-    int falseCoinsInTheMarket(Currency[] currencies);
+    int falseCoinsInTheMarket(List<Currency> currencies);
 
     // Exercise [8]
     // Filter all the buy orders out
-    String coinWithHighestFee(Currency[] currencies);
+    String coinWithHighestFee(List<Currency> currencies);
 
     // Exercise [9]
     // From the filter before with buy order - sort them in quantity bought in descending order.
-    double[] sortBuyOrdersQuantityDescending(Currency[] currencies);
+    double[] sortBuyOrdersQuantityDescending(List<Currency> currencies);
 }
