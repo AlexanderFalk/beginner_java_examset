@@ -13,7 +13,7 @@ public interface ExchangeAPI {
     // Exercise [1]
     // Add a trade order to the traders buy history
     // HINT: You can use the addElement() method from the Helper class
-    int addTradeOrderToTraderTwo(Trader trader, int order);
+    Trader addTradeOrder(Trader trader, int order);
 
     // Exercise [2]
     // From the helper method, populateTraderObjects, take the two Trader objects out of the array [0] [1],

@@ -1,0 +1,6 @@
+Test Case ID;Test Case;Value;Expected Result
+TC0010;Add Trade Order;10;7
+TC0011;Add Trade Order;32;8
+TC0012;Add Trade Order;13;9
+TC0013;Add Trade Order;27;10
+TC0014;Add Trade Order;98;11

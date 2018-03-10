@@ -1,0 +1,6 @@
+Test Case ID;Test Case;Value;Expected Result
+TC0020;Highest trade order (above 25);32;32
+TC0021;Highest trade order (above 25);38;38
+TC0022;Highest trade order (above 25);13;38
+TC0023;Highest trade order (above 25);67;67
+TC0024;Highest trade order (above 25);122;122

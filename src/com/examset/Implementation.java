@@ -9,24 +9,20 @@ public class Implementation implements ExchangeAPI {
 
     @Override
     public String changeNameOfTrader(Trader trader, String name) {
-       trader.setName(name);
+        trader.setName(name);
         return trader.getName();
     }
 
     @Override
-    public int addTradeOrderToTraderTwo(Trader trader, int order) {
+    public Trader addTradeOrder(Trader trader, int order) {
 
-        //Helper.populateTraderObjects();
-        int[] temporary = trader.getTradeHistory();
-        temporary = Helper.addElement(temporary, 9);
+        trader.setTradeHistory(Helper.addElement(trader.getTradeHistory(), order));
 
-        return temporary.length;
+        return trader;
     }
 
     @Override
     public int combineTradersHistory(Trader traderOne, Trader traderTwo) {
-        //Helper.populateTraderObjects();
-
         int result = traderOne.getTradeHistory().length + traderTwo.getTradeHistory().length;
         return result;
     }
@@ -35,9 +31,10 @@ public class Implementation implements ExchangeAPI {
     public List<Integer> oddTradesFromCombinedHistory(Trader traderOne, Trader traderTwo) {
         int[] comb = Helper.concat(traderOne.getTradeHistory(), traderTwo.getTradeHistory());
         List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < comb.length; i++) {
-            if(comb[i] % 2 == 1) {
-                result.add(comb[i]);
+        for (int aComb : comb) {
+            if (aComb % 2 == 1) {
+                System.out.println(aComb);
+                result.add(aComb);
             }
         }
 
