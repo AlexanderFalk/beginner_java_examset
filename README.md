@@ -1,5 +1,9 @@
 # Examset for new Computer Science Students
 
+#### Prerequisite
+You need the [following jar files](https://drive.google.com/open?id=14NKnQfmVI4mOnfIa_QFr0YgeM05d_mE6) and export them into your project before you can use this exam set.  
+
+
 This repository contains an exam set for new students at the Computer Science undergrad at CPHBusiness. The exam set is for Java Development and tests the students in their newly learned abilities. 
 
 The data files:
